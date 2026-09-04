@@ -13,13 +13,18 @@ Stack: Python 3.11+, FastAPI (`app/main.py`), Streamlit dashboard
 
 ## Commands
 
-```bash
-pip install -r requirements.txt        # setup (no venv tooling beyond stdlib)
+```powershell
+py -3.12 -m venv .venv                 # create the project environment
+.venv\Scripts\Activate.ps1            # activate it in PowerShell
+python -m pip install -r requirements.txt
 uvicorn app.main:app --reload          # API server
 streamlit run app/streamlit_app.py     # dashboard
-pytest tests/ -x -q                    # all tests
-pytest tests/test_compliance.py -q     # single file
+python -m pytest tests/ -x -q          # all tests
+python -m pytest tests/test_compliance.py -q
 ```
+
+All dependency installation and test commands must run through the project
+`.venv`; do not use the system Python environment for testing.
 
 `OPENCODE_ZEN_API_KEY` must be set in `.env` (see `.env.example`) before any
 LLM call works; engine rules/tests run fine without it.
