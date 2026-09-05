@@ -74,6 +74,11 @@ Engine code must import these constants, never re-hardcode numbers inline.
 Eligibility = OVERDUE status, not frozen, touches < cap, cooldown elapsed,
 not already at rung 3.
 
+Batch runs must be anchored at a fixed reference timestamp
+(`DEMO_REFERENCE_TIME` in `app/engine/clock.py`). `check_eligibility` and
+`detect_invoices` require an explicit `now` — never fall back to wall-clock
+time, or demo results will silently depend on the time of day.
+
 ## Promise-to-Pay (`app/engine/promise_to_pay.py`)
 
 Customer promise (date + amount) → log it, set `status = PROMISE_TO_PAY`

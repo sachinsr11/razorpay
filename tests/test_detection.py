@@ -76,3 +76,10 @@ def test_detection_keeps_ineligible_overdue_cases_with_reasons() -> None:
     assert len(cases) == 1
     assert cases[0].compliance.eligible is False
     assert "touch cap" in cases[0].compliance.reasons[0]
+
+
+def test_detect_invoices_requires_explicit_now() -> None:
+    invoice = make_invoice("INV-001", date(2026, 9, 1))
+
+    with pytest.raises(TypeError):
+        detect_invoices([invoice])

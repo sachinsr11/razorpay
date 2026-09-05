@@ -39,11 +39,15 @@ def is_within_business_hours(now: datetime) -> bool:
 
 def check_eligibility(
     invoice: Invoice,
-    now: datetime | None = None,
+    now: datetime,
 ) -> ComplianceResult:
-    """Evaluate whether an invoice may receive automated treatment."""
+    """Evaluate whether an invoice may receive automated treatment.
 
-    current_time = _as_utc(now or datetime.now(timezone.utc))
+    ``now`` must be supplied explicitly: batch runs anchor themselves at a
+    fixed reference time so results never depend on wall-clock time.
+    """
+
+    current_time = _as_utc(now)
     blocking_reasons: list[str] = []
 
     if invoice.status is not InvoiceStatus.OVERDUE:

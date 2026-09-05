@@ -1,7 +1,7 @@
 """Aging-bucket detection for overdue invoices."""
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 from collections.abc import Iterable
 
 from app.engine.compliance import ComplianceResult, check_eligibility
@@ -29,11 +29,14 @@ def _bucket_for(overdue_days: int) -> AgingBucket:
 
 def detect_invoices(
     invoices: Iterable[Invoice],
-    now: datetime | None = None,
+    now: datetime,
 ) -> list[DetectedCase]:
-    """Detect overdue invoices and attach their compliance result."""
+    """Detect overdue invoices and attach their compliance result.
 
-    current_time = now or datetime.now(timezone.utc)
+    ``now`` must be supplied explicitly so detection is deterministic.
+    """
+
+    current_time = now
     detected: list[DetectedCase] = []
 
     for invoice in invoices:

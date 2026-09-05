@@ -86,3 +86,8 @@ def test_outside_business_hours_is_blocked(hour: int) -> None:
 @pytest.mark.parametrize("hour", [9, 12, 17])
 def test_business_hours_include_start_and_exclude_end(hour: int) -> None:
     assert is_within_business_hours(NOW.replace(hour=hour)) is True
+
+
+def test_check_eligibility_requires_explicit_now() -> None:
+    with pytest.raises(TypeError):
+        check_eligibility(make_invoice())
